@@ -23,7 +23,7 @@ function serialEvent() {
             if(prevSound){
                 prevSound.stop();
             }
-            currSound.loop();
+            currSound.play();
         }
         prevSound = currSound;
     }

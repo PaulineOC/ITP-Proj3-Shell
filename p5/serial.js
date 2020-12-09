@@ -18,6 +18,7 @@ function serialEvent() {
 
         currSound = allSounds[songIdxToColors[inString]];
 
+
         if(prevSound !== currSound){
             console.log('playing new sound');
             if(prevSound){
@@ -27,6 +28,12 @@ function serialEvent() {
         }
         prevSound = currSound;
     }
+    // else if(inString.length && inString === 'PAUSE' && currSound.isPlaying()){
+    //     currSound.pause();
+    // }
+    // else if(inString.length && inString === 'PAUSE' && currSound.isPaused()){
+    //     currSound.play();
+    // }
 }
 
 function serverConnected() {

@@ -35,9 +35,11 @@ char *colorMessages[] = {
 int photoCellPin = A0;
 int photoCellReading;
 int photoCellThreshold = 35;
+int photoCellLightThreshold = 45;
 
 // Tilt switch
 int isUpright = HIGH;
+int tiltPin = 7;
 
 int prevTime;
 int currTime;
@@ -58,6 +60,10 @@ void loop() {
       photoCellReading = analogRead(photoCellPin);
       //Serial.println(photoCellReading);
   }
+
+//  int tiltReading = digitalRead(tiltPin);
+//  Serial.println(tiltReading);
+//  
 
   // CHECK: 
   // if  RFID tag/card is present ) PICC = Proximity Integrated Circuit Card

@@ -87,4 +87,10 @@ function keyPressed(){
         currSound =  allSounds[songIdxToColors['BLACK']];
         currSound.play();
     }
+
+    //S 
+    if(keyCode === 38){
+        if(currSound) currSound.stop();
+        currSound.play();
+    }
 }

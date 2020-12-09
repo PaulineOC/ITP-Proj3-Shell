@@ -24,15 +24,17 @@ boolean isBlack = true;
 
 int currTagColor = -1;
 
-char *colorMessages[] = {"BLUE",
-                     "ORANGE",
-                     "BLACK"};
+char *colorMessages[] = {
+  "BLUE",
+  "ORANGE",
+  "BLACK"
+};
 
 
 // Photocell
 int photoCellPin = A0;
 int photoCellReading;
-int photoCellThreshhold = 30;
+int photoCellThreshold = 35;
 
 // Tilt switch
 int isUpright = HIGH;
@@ -46,34 +48,25 @@ void setup() {
   SPI.begin(); // open SPI connection
   mfrc522.PCD_Init(); // Initialize Proximity Coupling Device (PCD)
   Serial.begin(9600); // open serial connection
-
-  Serial.println("VCNL4010 test");
-
-//  if (! vcnl.begin()){
-//    Serial.println("Sensor not found :(");
-//    while (1);
-//  }
-//  
-//  Serial.println("Found VCNL4010");
-
 }
 
 
 void loop() {
 
+  // Delays the photocell reading
   if(millis() % 50 == 0 ){
       photoCellReading = analogRead(photoCellPin);
-      Serial.println(photoCellReading);
+      //Serial.println(photoCellReading);
   }
 
   // CHECK: 
   // if  RFID tag/card is present ) PICC = Proximity Integrated Circuit Card
   // if RFID tag/card was read
-  // shell is against ear = photoCell reading is darker than 30 && tiltSwitch
-  if (mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial() && photoCellReading < 30 && isUpright == HIGH ) {
-
+  // if shell is against ear = photoCell reading is darker than 30 && tiltSwitch
+  
+  if (mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial() && photoCellReading < photoCellThreshold && isUpright == HIGH ) {
+    
       int colorTag = determineColorTag();
-      
       if(colorTag != currTagColor && colorTag >= 0 ){
         // Send the message to p5
         Serial.println(colorMessages[colorTag]);
@@ -86,9 +79,7 @@ void loop() {
 
 
 int determineColorTag(){
-  
   isBlue = isOrange = isBlack = true;
- 
   for (byte i = 0; i < mfrc522.uid.size; ++i) {
     isBlue &= rBlue[i] == mfrc522.uid.uidByte[i];
     isOrange &= rOrange[i] == mfrc522.uid.uidByte[i];
@@ -96,16 +87,13 @@ int determineColorTag(){
  }
  
  if(isBlue){
-    Serial.println("BLUE");
     return 0;
 
  }
  else if(isOrange){
-    Serial.println("ORANGE");
-    return  1;
+    return 1;
  }
  else if(isBlack){
-   Serial.println("BLACK");
   return  2;
  }
  
